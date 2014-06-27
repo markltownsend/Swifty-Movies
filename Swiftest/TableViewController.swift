@@ -11,8 +11,9 @@ import UIKit
 class TableViewController: UITableViewController {
 
     @IBOutlet var searchTextField : UITextField
-    var myArray: NSArray
+    var myArray: Array<Movie>
     var networkManager : NetworkManager
+    var selectedMovie : Movie?
 
     init(style: UITableViewStyle) {
         networkManager = NetworkManager()
@@ -54,17 +55,17 @@ class TableViewController: UITableViewController {
         networkManager.searchTitle(searchString, {
             response, error in
             println("done loading")
+            let movies = response as Array<Movie>
             self.title = "Movies"
-            self.myArray = response as NSArray
+            self.myArray = movies as Array<Movie>
             self.tableView.reloadData()
 
         })
     }
     override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!)
     {
-            let controller = segue.destinationViewController as DetailViewController
-            var cell = sender as UITableViewCell
-            controller.label = cell.textLabel.text
+        let controller = segue.destinationViewController as DetailViewController
+        controller.movie = selectedMovie
     }
     // #pragma mark - Table view data source
 
@@ -77,7 +78,12 @@ class TableViewController: UITableViewController {
     override func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return self.myArray.count
+        return myArray.count
+    }
+
+    override func tableView(tableView: UITableView!, willSelectRowAtIndexPath indexPath: NSIndexPath!) -> NSIndexPath! {
+        selectedMovie = myArray[indexPath.row]
+        return indexPath;
     }
 
     override func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
@@ -86,9 +92,8 @@ class TableViewController: UITableViewController {
         if (indexPath) {
             row = indexPath?.row
         }
-        let dict = myArray[row!] as NSDictionary
-        cell.textLabel.text = dict["title"] as String
-
+        let movie = myArray[row!]
+        cell.textLabel.text = movie.title
         return cell
     }
 

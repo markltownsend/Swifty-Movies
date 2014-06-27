@@ -32,7 +32,9 @@ class NetworkManager {
                         let movieObj = Movie(dictionary: movie as NSDictionary)
                         movies += movieObj
                     }
-                    completion(response: movies, error: error)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completion(response: movies, error: error)
+                    })
                 }
 
             })

@@ -10,37 +10,37 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
-    @IBOutlet var myLabel : UILabel
-    var label : String?
-    init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        // Custom initialization
-    }
+    var movie : Movie?
 
-    init(coder aDecoder: NSCoder!)
-    {
-        super.init(coder: aDecoder)
-    }
+    @IBOutlet var titleLabel: UILabel
+    @IBOutlet var directorsLabel: UILabel
+    @IBOutlet var plotLabel: UILabel
+    @IBOutlet var imageView: UIImageView
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = label
+
+        setupUI()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    /*
-    // #pragma mark - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue?, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+    func setupUI() {
+        if let localMovie = movie {
+            titleLabel.text = localMovie.title;
+            title = localMovie.title
+            plotLabel.text = localMovie.plot
+            var error : NSError?
+            let url = NSURL.URLWithString(localMovie.posterUrlString)
+            var request : NSURLRequest = NSURLRequest(URL: url)
+            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+                if !error? {
+                    self.imageView.image = UIImage(data:data)
+                }
+            })
+        }
     }
-    */
-
 }
