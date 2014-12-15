@@ -12,10 +12,10 @@ class DetailViewController: UIViewController {
 
     var movie : Movie?
 
-    @IBOutlet var titleLabel: UILabel
-    @IBOutlet var directorsLabel: UILabel
-    @IBOutlet var plotLabel: UILabel
-    @IBOutlet var imageView: UIImageView
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var directorsLabel: UILabel!
+    @IBOutlet var plotLabel: UILabel!
+    @IBOutlet var imageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +37,7 @@ class DetailViewController: UIViewController {
             let url = NSURL.URLWithString(localMovie.posterUrlString)
             var request : NSURLRequest = NSURLRequest(URL: url)
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: {(response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-                if !error? {
+                if !(error? != nil) {
                     self.imageView.image = UIImage(data:data)
                 }
             })

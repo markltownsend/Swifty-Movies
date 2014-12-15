@@ -10,18 +10,18 @@ import UIKit
 
 class TableViewController: UITableViewController {
 
-    @IBOutlet var searchTextField : UITextField
+    @IBOutlet var searchTextField : UITextField!
     var myArray: Array<Movie>
     var networkManager : NetworkManager
     var selectedMovie : Movie?
 
-    init(style: UITableViewStyle) {
+    override init(style: UITableViewStyle) {
         networkManager = NetworkManager()
         myArray = []
         super.init(style: style)
     }
 
-    init(coder aDecoder: NSCoder!) {
+    required init(coder aDecoder: NSCoder) {
         networkManager = NetworkManager()
         myArray = []
         super.init(coder: aDecoder)
@@ -62,7 +62,7 @@ class TableViewController: UITableViewController {
 
         })
     }
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!)
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
     {
         let controller = segue.destinationViewController as DetailViewController
         controller.movie = selectedMovie
@@ -81,19 +81,17 @@ class TableViewController: UITableViewController {
         return myArray.count
     }
 
-    override func tableView(tableView: UITableView!, willSelectRowAtIndexPath indexPath: NSIndexPath!) -> NSIndexPath! {
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath {
         selectedMovie = myArray[indexPath.row]
         return indexPath;
     }
 
-    override func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
-        let cell = tableView!.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell!
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
         var row: Int?
-        if (indexPath) {
-            row = indexPath?.row
-        }
+        row = indexPath.row
         let movie = myArray[row!]
-        cell.textLabel.text = movie.title
+        cell.textLabel?.text = movie.title;
         return cell
     }
 

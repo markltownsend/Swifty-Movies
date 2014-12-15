@@ -25,7 +25,7 @@ class NetworkManager {
                 data, response, error in
                 var jsonError: NSError?
                 var json: AnyObject! = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &jsonError);
-                if (json) {
+                if ((json) != nil) {
                     var moviesJson = json as NSArray
                     var movies = Array<Movie>()
                     for movie : AnyObject in moviesJson {
